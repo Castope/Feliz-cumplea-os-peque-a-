@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños Jhaquely! 🩺💜</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        cursive: ['Caveat', 'cursive'],
+                        serif: ['Playfair Display', 'serif']
+                    },
+                    colors: {
+                        uniform: {
+                            50: '#faf5ff',
+                            100: '#f3e8ff',
+                            200: '#e9d5ff',
+                            300: '#d8b4fe',
+                            400: '#c084fc',
+                            500: '#a855f7',
+                            600: '#9333ea',
+                            700: '#7e22ce',
+                            800: '#581c87',
+                            900: '#3b0764',
+                            deep: '#23073d',
+                            midnight: '#150326'
+                        },
+                        silver: {
+                            light: '#f8fafc',
+                            DEFAULT: '#e2e8f0',
+                            glow: '#cbd5e1'
+                        },
+                        gold: {
+                            light: '#fef08a',
+                            DEFAULT: '#eab308',
+                            glow: '#ffd700'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Perspectiva y giro 3D */
+        .scene {
+            perspective: 1600px;
+        }
+        
+        .card-3d {
+            transition: transform 1.1s cubic-bezier(0.25, 1, 0.35, 1.05);
+            transform-style: preserve-3d;
+        }
+        
+        .card-3d.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Destello holográfico dinámico: Púrpura, Perla y Dorado */
+        .hologram-shine {
+            background: linear-gradient(
+                115deg,
+                transparent 15%,
+                rgba(255, 255, 255, 0.05) 25%,
+                rgba(192, 132, 252, 0.35) 42%,
+                rgba(255, 255, 255, 0.8) 50%,
+                rgba(254, 240, 138, 0.4) 58%,
+                rgba(147, 51, 234, 0.25) 65%,
+                transparent 78%
+            );
+            background-size: 260% 260%;
+            transition: transform 0.6s ease;
+            pointer-events: none;
+        }
+
+        @keyframes shineMove {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        .animated-sheen {
+            animation: shineMove 6s ease-in-out infinite;
+        }
+
+        /* Animación del trazado EKG */
+        @keyframes pulseEKG {
+            0% { stroke-dashoffset: 600; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        .ekg-line {
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            animation: pulseEKG 2.6s linear infinite;
+        }
+
+        /* Latido suave de corazón */
+        @keyframes heartThump {
+            0%, 100% { transform: scale(1); }
+            14% { transform: scale(1.22); }
+            28% { transform: scale(1.02); }
+            42% { transform: scale(1.18); }
+            56% { transform: scale(1); }
+        }
+
+        .heart-beat {
+            animation: heartThump 1.4s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        /* Brillo de Botón Médico Morado */
+        @keyframes scrubGlow {
+            0%, 100% { box-shadow: 0 0 16px rgba(168, 85, 247, 0.45), 0 0 32px rgba(234, 179, 8, 0.25); }
+            50% { box-shadow: 0 0 28px rgba(168, 85, 247, 0.85), 0 0 48px rgba(255, 255, 255, 0.5); }
+        }
+
+        .btn-glow {
+            animation: scrubGlow 2.3s infinite;
+        }
+
+        /* Fondo ambiental morado profundo */
+        .ambient-bg {
+            background: radial-gradient(circle at 50% 15%, #4a1575 0%, #280a42 45%, #10021c 100%);
+        }
+
+        /* Textura sutil de cuadrícula médica */
+        .medical-grid {
+            background-image: 
+                linear-gradient(to right, rgba(192, 132, 252, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(192, 132, 252, 0.08) 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+
+        /* Scrollbar estilizada */
+        .custom-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: rgba(168, 85, 247, 0.5);
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="ambient-bg min-h-screen text-slate-100 font-sans flex flex-col items-center justify-between p-3 sm:p-6 overflow-x-hidden select-none">
+
+    <!-- Canvas de Fuegos Artificiales y Confeti -->
+    <canvas id="fireworksCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-50"></canvas>
+
+    <!-- Barra de Herramientas Superior: Controles de Audio y Efectos -->
+    <header class="w-full max-w-4xl flex items-center justify-between py-2 px-3 z-40">
+        <div class="flex items-center gap-2">
+            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-500/20 border border-purple-400/40 text-purple-300 shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 heart-beat" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </span>
+            <span class="text-xs sm:text-sm font-semibold tracking-wider text-purple-200 uppercase">
+                Uniforme Clínico: <span class="text-white font-bold bg-purple-900/60 px-2 py-0.5 rounded border border-purple-400/30">Morado & Blanco</span>
+            </span>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <!-- Botón de Audio -->
+            <button id="audioToggleBtn" onclick="toggleAudio()" class="px-3 py-1.5 rounded-full text-xs font-medium bg-slate-900/80 border border-purple-500/40 hover:border-purple-300 text-slate-200 transition-all flex items-center gap-1.5 backdrop-blur-md shadow-lg">
+                <span id="audioIcon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                    </svg>
+                </span>
+                <span id="audioStatusText">Activar Sonido</span>
+            </button>
+
+            <!-- Botón Disparar Cohetes Extra -->
+            <button onclick="launchExplosionSpree()" title="¡Lanzar más fuegos artificiales!" class="px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-purple-500/30 via-fuchsia-500/20 to-amber-500/20 border border-purple-300/40 text-purple-200 hover:text-white hover:border-purple-200 transition-all flex items-center gap-1 backdrop-blur-md shadow-md active:scale-95">
+                <span>✨</span>
+                <span class="hidden sm:inline">Chispas & Cohetes</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Contenedor 3D de la Tarjeta -->
+    <main class="scene w-full max-w-[460px] h-[650px] sm:h-[690px] my-auto relative z-30">
+        <div id="cardElement" class="card-3d w-full h-full relative cursor-pointer group">
+
+            <!-- ============================================== -->
+            <!-- CARA FRONTAL: Scrub Morado y Ficha Médica       -->
+            <!-- ============================================== -->
+            <div class="card-face absolute inset-0 w-full h-full rounded-3xl bg-gradient-to-b from-uniform-900 via-uniform-800 to-uniform-deep border-2 border-purple-400/50 shadow-2xl overflow-hidden backdrop-blur-xl flex flex-col justify-between p-6 sm:p-7">
+                
+                <!-- Destello Holográfico -->
+                <div class="hologram-shine animated-sheen absolute inset-0 z-10"></div>
+                
+                <!-- Borde Decorativo Interior en Blanco Puro & Plata -->
+                <div class="absolute inset-2 rounded-2xl border border-white/20 pointer-events-none"></div>
+
+                <!-- Parte Superior: Credencial de Estudiante de Enfermería -->
+                <div class="relative z-20">
+                    <div class="flex items-center justify-between pb-3 border-b border-purple-300/20">
+                        <div class="flex items-center gap-3">
+                            <!-- Ícono de Cofia / Cruz Blanca en Fondo Morado Clínico -->
+                            <div class="w-11 h-11 rounded-2xl bg-white text-uniform-700 flex items-center justify-center shadow-lg shadow-purple-950/40 border border-purple-200 font-bold text-xl">
+                                🩺
+                            </div>
+                            <div>
+                                <h3 class="text-xs font-extrabold tracking-widest text-purple-200 uppercase">Hospital Universitario</h3>
+                                <p class="text-[11px] text-purple-300/80">Facultad de Ciencias de la Salud • Enfermería</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-white text-uniform-900 border border-purple-200 shadow-sm uppercase tracking-wider">
+                            ENF-2026
+                        </span>
+                    </div>
+
+                    <!-- Insignia y Nombre de Jhaquely -->
+                    <div class="mt-4 text-center">
+                        <span class="text-xs uppercase tracking-widest text-amber-300 font-semibold flex items-center justify-center gap-1">
+                            <span>✨</span> Historia Clínica Exclusiva <span>✨</span>
+                        </span>
+                        <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-1 tracking-tight drop-shadow-md">
+                            Jhaquely
+                        </h1>
+                        <div class="inline-flex items-center gap-1.5 mt-1 px-3 py-0.5 rounded-full bg-white/10 border border-white/30 text-white text-xs font-medium backdrop-blur-sm">
+                            <span class="text-purple-300">💜</span> Futura Licenciada en Enfermería
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección Central: Monitor EKG Morado/Lila & Blanco -->
+                <div class="relative z-20 bg-slate-950/75 border border-purple-400/40 rounded-2xl p-4 my-auto shadow-inner medical-grid">
+                    <div class="flex justify-between items-center text-xs text-purple-200 mb-1 font-mono">
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-purple-400 animate-ping"></span>
+                            FRECUENCIA DE FELICIDAD
+                        </span>
+                        <span class="text-white font-bold text-sm bg-purple-800/60 px-2 py-0.5 rounded border border-purple-400/40">120+ BPM</span>
+                    </div>
+
+                    <!-- SVG EKG con Corazón en Morado Neón -->
+                    <div class="relative h-20 w-full flex items-center justify-center overflow-hidden">
+                        <svg viewBox="0 0 500 100" class="w-full h-full overflow-visible">
+                            <!-- Línea tenue de fondo -->
+                            <path d="M 0 50 L 90 50 L 110 50 L 120 20 L 135 85 L 150 10 L 165 75 L 180 50 L 230 50 C 230 30, 260 25, 275 45 C 290 25, 320 30, 320 50 C 320 70, 275 90, 275 90 C 275 90, 230 70, 230 50 Z M 320 50 L 370 50 L 380 30 L 395 70 L 410 50 L 500 50" 
+                                  fill="none" stroke="rgba(216, 180, 254, 0.2)" stroke-width="2.5" />
+                            
+                            <!-- Línea neón morada brillante y blanca -->
+                            <path class="ekg-line" d="M 0 50 L 90 50 L 110 50 L 120 20 L 135 85 L 150 10 L 165 75 L 180 50 L 230 50 C 230 30, 260 25, 275 45 C 290 25, 320 30, 320 50 C 320 70, 275 90, 275 90 C 275 90, 230 70, 230 50 Z M 320 50 L 370 50 L 380 30 L 395 70 L 410 50 L 500 50" 
+                                  fill="none" stroke="#d8b4fe" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                                  style="filter: drop-shadow(0 0 6px #c084fc) drop-shadow(0 0 12px #a855f7) drop-shadow(0 0 18px #ffffff);" />
+                        </svg>
+                    </div>
+
+                    <!-- Indicadores de Signos Vitales -->
+                    <div class="grid grid-cols-3 gap-2 mt-2 pt-2 border-t border-purple-800/80 text-center font-mono">
+                        <div class="bg-purple-950/60 rounded-lg p-1.5 border border-purple-700/50">
+                            <div class="text-[10px] text-purple-300">SpO₂ AMOR</div>
+                            <div class="text-xs font-bold text-white">100%</div>
+                        </div>
+                        <div class="bg-purple-950/60 rounded-lg p-1.5 border border-purple-700/50">
+                            <div class="text-[10px] text-purple-300">VOCACIÓN</div>
+                            <div class="text-xs font-bold text-amber-300">INFINITA</div>
+                        </div>
+                        <div class="bg-purple-950/60 rounded-lg p-1.5 border border-purple-700/50">
+                            <div class="text-[10px] text-purple-300">DIAGNÓSTICO</div>
+                            <div class="text-xs font-bold text-fuchsia-300">CUMPLEAÑOS</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón de Inyección de Cumpleaños -->
+                <div class="relative z-20 text-center space-y-3">
+                    <button id="openCardBtn" onclick="handleCardFlip(event)" class="btn-glow w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-500 hover:to-fuchsia-500 text-white font-bold text-base sm:text-lg flex items-center justify-center gap-3 transition-all transform active:scale-95 group/btn shadow-xl border-2 border-white/40">
+                        <span class="text-2xl transition-transform duration-300 group-hover/btn:rotate-12 group-hover/btn:scale-125">💉</span>
+                        <span>Inyectar Dosis de Cumpleaños</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1 transition-transform group-hover/btn:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                    <p class="text-[11px] text-purple-200/90 flex items-center justify-center gap-1 font-medium">
+                        <span>👆 Toca para abrir la receta oficial y celebrar con fuegos artificiales</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- CARA TRASERA: Receta Médica en Blanco Clínico   -->
+            <!-- ============================================== -->
+            <div class="card-face card-back absolute inset-0 w-full h-full rounded-3xl bg-white border-4 border-purple-600 shadow-2xl overflow-hidden backdrop-blur-2xl flex flex-col justify-between p-5 sm:p-7 text-slate-800">
+                
+                <!-- Marca de agua médica suave de fondo -->
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5">
+                    <span class="text-[200px] font-black text-purple-900 select-none">✚</span>
+                </div>
+
+                <!-- Borde Decorativo Interior Lavanda -->
+                <div class="absolute inset-2 rounded-2xl border border-purple-200 pointer-events-none"></div>
+
+                <!-- Encabezado de la Receta Médica Oficial (Rp / ℞) -->
+                <div class="relative z-20">
+                    <div class="flex items-start justify-between border-b-2 border-purple-100 pb-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-3xl text-purple-700 font-serif font-black">℞</span>
+                            <div>
+                                <h2 class="text-xs font-bold text-purple-900 tracking-wider uppercase">Receta Médica de Cumpleaños</h2>
+                                <p class="text-[10px] text-purple-600 font-medium">Servicio de Cuidados Emocionales & Alegría</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] text-slate-400 font-mono">ESTADO:</span>
+                            <div class="text-xs font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
+                                ★ 0 GUARDIAS HOY ★
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Datos de la Paciente / Homenajeada -->
+                    <div class="mt-2.5 px-3 py-2 rounded-xl bg-purple-50 border border-purple-200 flex justify-between items-center text-xs">
+                        <div>
+                            <span class="text-purple-600 font-medium">Destinataria:</span>
+                            <span class="font-bold text-purple-950 ml-1">Jhaquely</span>
+                        </div>
+                        <span class="text-[11px] text-purple-700 font-semibold flex items-center gap-1">
+                            <span>🎂</span> ¡Feliz Cumpleaños!
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Cuerpo de la Receta con Prescripciones -->
+                <div class="relative z-20 my-2 overflow-y-auto max-h-[340px] pr-1.5 custom-scroll space-y-2.5">
+                    
+                    <!-- Prescripciones de Enfermería -->
+                    <div class="space-y-2 text-xs">
+                        <div class="p-2.5 rounded-xl bg-purple-50/70 border border-purple-200 flex items-start gap-2.5 hover:bg-purple-50 transition-colors">
+                            <div class="w-7 h-7 rounded-lg bg-purple-600 text-white flex items-center justify-center shrink-0 text-sm font-bold shadow-sm">
+                                💊
+                            </div>
+                            <div>
+                                <span class="font-bold text-purple-900">Felicidamina Forte 1000mg</span>
+                                <p class="text-slate-600 text-[11px] mt-0.5">Vía oral, cada 2 horas. Acompañada de carcajadas, cariño y tus seres queridos.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-2.5 rounded-xl bg-purple-50/70 border border-purple-200 flex items-start gap-2.5 hover:bg-purple-50 transition-colors">
+                            <div class="w-7 h-7 rounded-lg bg-fuchsia-600 text-white flex items-center justify-center shrink-0 text-sm font-bold shadow-sm">
+                                🍰
+                            </div>
+                            <div>
+                                <span class="font-bold text-purple-900">Sobredosis de Pastel Clínicamente Aprobada</span>
+                                <p class="text-slate-600 text-[11px] mt-0.5">Dosis no calculada. Indicada para recargar energía dulce sin ninguna restricción.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-2.5 rounded-xl bg-purple-50/70 border border-purple-200 flex items-start gap-2.5 hover:bg-purple-50 transition-colors">
+                            <div class="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center shrink-0 text-sm font-bold shadow-sm">
+                                💜
+                            </div>
+                            <div>
+                                <span class="font-bold text-purple-900">Suspensión Absoluta de Estrés & Guardias</span>
+                                <p class="text-slate-600 text-[11px] mt-0.5">Reposo estricto de preocupaciones. Válido durante todo tu día especial.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mensaje emotivo de reconocimiento a su uniforme y vocación -->
+                    <div class="p-3.5 rounded-2xl bg-gradient-to-br from-purple-900 to-uniform-800 text-white text-center relative overflow-hidden shadow-md">
+                        <p class="font-serif italic text-sm sm:text-base text-purple-100 leading-relaxed">
+                            "Llevar ese uniforme morado y blanco representa más que una carrera: es llevar la vocación, la ternura y la fuerza de curar con el corazón."
+                        </p>
+                        <p class="text-xs text-purple-200 mt-2 font-light">
+                            Querida <strong class="text-white font-bold underline decoration-amber-400">Jhaquely</strong>, que este nuevo año esté repleto de bendiciones y éxitos en cada paciente que cuides. ¡Serás una enfermera brillante y admirable!
+                        </p>
+                    </div>
+
+                    <!-- Sello de Aprobación y Firma -->
+                    <div class="flex items-center justify-between pt-1 px-1">
+                        <div class="text-center font-mono">
+                            <span class="inline-block px-2 py-0.5 border border-dashed border-purple-500 rounded text-[9px] text-purple-700 bg-purple-50 font-semibold">
+                                SELLO CLÍNICO: APROBADO 🩺✨
+                            </span>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-cursive text-2xl text-purple-800 leading-none">Con mucho cariño</div>
+                            <span class="text-[10px] text-slate-500 font-medium">¡A disfrutar al máximo! 🎉</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones Inferiores de Acción -->
+                <div class="relative z-20 pt-2 border-t border-purple-100 flex items-center gap-2">
+                    <button onclick="flipCardBack(event)" class="w-1/2 py-2.5 px-3 rounded-xl bg-purple-100 hover:bg-purple-200 border border-purple-300 text-purple-900 text-xs font-bold flex items-center justify-center gap-1.5 transition-all active:scale-95">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        <span>Voltear Portada</span>
+                    </button>
+
+                    <button onclick="triggerMassiveShow(event)" class="w-1/2 py-2.5 px-3 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md shadow-purple-500/30 active:scale-95">
+                        <span>🎆</span>
+                        <span>¡Más Fuegos!</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Pie de página discreto -->
+    <footer class="w-full text-center py-2 text-xs text-purple-300/60 z-30 font-medium">
+        Diseñado con 💜 para la mejor estudiante de enfermería, Felz cumapleaños pequeña.
+    </footer>
+
+    <!-- ============================================== -->
+    <!-- LOGICA: Canvas de Fuegos Artificiales y Audio  -->
+    <!-- ============================================== -->
+    <script>
+        /* ========================================================
+           1. SISTEMA DE AUDIO (Web Audio API Sintetizado Seguro)
+           ======================================================== */
+        let audioCtx = null;
+        let isAudioMuted = true;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function toggleAudio() {
+            const ctx = getAudioContext();
+            isAudioMuted = !isAudioMuted;
+            
+            const btnText = document.getElementById('audioStatusText');
+            const iconContainer = document.getElementById('audioIcon');
+
+            if (!isAudioMuted) {
+                btnText.innerText = "Sonido Activado";
+                btnText.classList.add("text-purple-300");
+                iconContainer.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                    </svg>
+                `;
+                playChimeSound(660);
+                playHeartbeatSound();
+            } else {
+                btnText.innerText = "Activar Sonido";
+                btnText.classList.remove("text-purple-300");
+                iconContainer.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                    </svg>
+                `;
+            }
+        }
+
+        // Sintetizador de Latido de Corazón ("Lub-Dub")
+        function playHeartbeatSound() {
+            if (isAudioMuted) return;
+            const ctx = getAudioContext();
+            if (!ctx) return;
+
+            const now = ctx.currentTime;
+            createHeartThud(ctx, now, 68, 0.14);
+            createHeartThud(ctx, now + 0.18, 55, 0.12);
+        }
+
+        function createHeartThud(ctx, time, freq, duration) {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, time);
+            osc.frequency.exponentialRampToValueAtTime(30, time + duration);
+
+            gain.gain.setValueAtTime(0.4, time);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start(time);
+            osc.stop(time + duration);
+        }
+
+        // Campanillas de fuegos artificiales
+        function playChimeSound(freq = 523.25) {
+            if (isAudioMuted) return;
+            const ctx = getAudioContext();
+            if (!ctx) return;
+
+            const now = ctx.currentTime;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now);
+
+            gain.gain.setValueAtTime(0.18, now);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.6);
+        }
+
+        function playCelebrationFanfare() {
+            if (isAudioMuted) return;
+            const notes = [659.25, 830.61, 987.77, 1318.51, 1661.22];
+            notes.forEach((freq, idx) => {
+                setTimeout(() => {
+                    playChimeSound(freq);
+                }, idx * 90);
+            });
+        }
+
+        /* ========================================================
+           2. MOTOR DE FUEGOS ARTIFICIALES Y CONFETI (Morado & Blanco)
+           ======================================================== */
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx2d = canvas.getContext('2d');
+        let particles = [];
+        let animationFrameId = null;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor(x, y, color, isConfetti = false) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.isConfetti = isConfetti;
+                
+                const angle = Math.random() * Math.PI * 2;
+                const speed = isConfetti ? (Math.random() * 4 + 2) : (Math.random() * 8 + 3);
+                
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed - (isConfetti ? 2 : 1);
+                
+                this.alpha = 1;
+                this.decay = isConfetti ? (Math.random() * 0.008 + 0.004) : (Math.random() * 0.02 + 0.012);
+                this.gravity = isConfetti ? 0.06 : 0.12;
+                this.friction = 0.96;
+                this.size = isConfetti ? (Math.random() * 6 + 4) : (Math.random() * 3 + 1.5);
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = (Math.random() - 0.5) * 12;
+            }
+
+            update() {
+                this.vx *= this.friction;
+                this.vy *= this.friction;
+                this.vy += this.gravity;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= this.decay;
+                this.rotation += this.rotationSpeed;
+            }
+
+            draw(ctx) {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, this.alpha);
+                ctx.translate(this.x, this.y);
+
+                if (this.isConfetti) {
+                    ctx.rotate((this.rotation * Math.PI) / 180);
+                    ctx.fillStyle = this.color;
+                    ctx.fillRect(-this.size / 2, -this.size / 4, this.size, this.size / 2);
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = this.color;
+                    ctx.fill();
+                }
+
+                ctx.restore();
+            }
+        }
+
+        // Paleta de fuegos artificiales ajustada al uniforme: Morados, Blancos, Lilas y Oro
+        const celebrationPalette = [
+            '#a855f7', // Púrpura brillante
+            '#c084fc', // Lila claro
+            '#d8b4fe', // Lavanda suave
+            '#ffffff', // Blanco puro
+            '#f8fafc', // Perla clínico
+            '#ffd700', // Destello dorado
+            '#e879f9'  // Rosa orquídea
+        ];
+
+        function createExplosion(x, y, count = 75, isConfetti = false) {
+            for (let i = 0; i < count; i++) {
+                const color = celebrationPalette[Math.floor(Math.random() * celebrationPalette.length)];
+                particles.push(new Particle(x, y, color, isConfetti));
+            }
+        }
+
+        function animateParticles() {
+            ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.update();
+                p.draw(ctx2d);
+                if (p.alpha <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+
+            if (particles.length > 0) {
+                animationFrameId = requestAnimationFrame(animateParticles);
+            } else {
+                animationFrameId = null;
+            }
+        }
+
+        function triggerBurstAt(x, y) {
+            createExplosion(x, y, 70, false);
+            createExplosion(x, y, 35, true);
+            if (!animationFrameId) {
+                animateParticles();
+            }
+        }
+
+        function launchExplosionSpree() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            playCelebrationFanfare();
+
+            const points = [
+                { x: width * 0.25, y: height * 0.35 },
+                { x: width * 0.75, y: height * 0.3 },
+                { x: width * 0.5, y: height * 0.2 },
+                { x: width * 0.35, y: height * 0.5 },
+                { x: width * 0.65, y: height * 0.45 }
+            ];
+
+            points.forEach((pt, index) => {
+                setTimeout(() => {
+                    triggerBurstAt(pt.x, pt.y);
+                    if (!isAudioMuted) {
+                        playChimeSound(500 + index * 120);
+                    }
+                }, index * 220);
+            });
+        }
+
+        /* ========================================================
+           3. INTERACCIÓN DE GIRO 3D DE LA TARJETA
+           ======================================================== */
+        const card = document.getElementById('cardElement');
+        let isFlipped = false;
+
+        function handleCardFlip(event) {
+            if (event) event.stopPropagation();
+
+            if (!isFlipped) {
+                card.classList.add('flipped');
+                isFlipped = true;
+                
+                playHeartbeatSound();
+                setTimeout(() => {
+                    launchExplosionSpree();
+                }, 350);
+            }
+        }
+
+        function flipCardBack(event) {
+            if (event) event.stopPropagation();
+            card.classList.remove('flipped');
+            isFlipped = false;
+        }
+
+        function triggerMassiveShow(event) {
+            if (event) event.stopPropagation();
+            launchExplosionSpree();
+        }
+
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('button')) return;
+
+            if (isFlipped) {
+                card.classList.remove('flipped');
+                isFlipped = false;
+            } else {
+                handleCardFlip(e);
+            }
+        });
+
+        // Giro 3D sutil con el ratón
+        document.addEventListener('mousemove', (e) => {
+            if (window.innerWidth < 768) return;
+            const cx = window.innerWidth / 2;
+            const cy = window.innerHeight / 2;
+            const dx = (e.clientX - cx) / cx;
+            const dy = (e.clientY - cy) / cy;
+
+            const baseRotation = isFlipped ? 180 : 0;
+            const tiltY = baseRotation + dx * 10;
+            const tiltX = -dy * 10;
+
+            card.style.transform = `rotateY(${tiltY}deg) rotateX(${tiltX}deg)`;
+        });
+
+        document.addEventListener('mouseleave', () => {
+            card.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+        });
+    </script>
+</body>
+</html>
